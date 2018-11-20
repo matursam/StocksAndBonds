@@ -1,11 +1,13 @@
 package game_data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Stock {
 	private String name;
 	private int price;
+	private ArrayList<Integer> pastPrices;
 	private HashMap<Integer, Integer> bullMarketValues;
 	private HashMap<Integer, Integer> bearMarketValues;
 	
@@ -14,6 +16,7 @@ public class Stock {
 		this.price = price;
 		this.bullMarketValues = bullMarketValues;
 		this.bearMarketValues = bearMarketValues;
+		this.pastPrices = new ArrayList<Integer>();
 	}
 	
 	public String getName() {
@@ -22,6 +25,10 @@ public class Stock {
 	
 	public int getPrice() {
 		return this.price;
+	}
+	
+	public ArrayList<Integer> getPastPrices() {
+		return pastPrices;
 	}
 	
 	public void updateStockPrice(boolean bearMarket) {
@@ -35,6 +42,7 @@ public class Stock {
 			adjustment = bullMarketValues.get(diceRoll);
 		}
 		this.price += adjustment;
+		pastPrices.add(this.price);
 	}
 	
 }

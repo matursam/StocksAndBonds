@@ -2,12 +2,12 @@ package game_logic;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import game_data.Player;
 import game_data.Stock;
 
 /**
@@ -23,22 +23,35 @@ public class GameManager {
 	
 	/** ArrayList to hold all stocks available for purchase */
 	private ArrayList<Stock> stocks;
-	
+	/** ArrayList to hold all players **/
+	private ArrayList<Player> players;
+	/** True if the last market was a bear market **/
 	private boolean bearMarket;
 	
 	
-	public GameManager() {
+	public GameManager(ArrayList<Player> p) {
+		this.players = p;
 		// Read the stocks in from the stock folder
 		readStocks();
-		// Determine if the starting market price will be bull or bear
+		// Initialize the stock values for the first turn
+		updateStockValues();
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	
+	/**
+	 * Updates stock values for the next turn
+	 */
+	public void updateStockValues() {
+		// Determine if the market will be bull or bear
 		bearMarket = Math.random() < 0.5 ? true : false;
 		// Update the starting price of each stock
 		for(Stock s : stocks) {
 			s.updateStockPrice(bearMarket);
 		}
-		
 	}
-	
 	
 	/**
 	 * Reads stocks in from the csv file gamedata/stocks/stocks.csv
@@ -99,6 +112,21 @@ public class GameManager {
 	
 	public boolean wasBearMarket() {
 		return bearMarket;
+	}
+	
+	public String getStockBanner() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("%25s", "Stock Name"));
+		sb.append(" |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10  | Final\n");
+		for(Stock s : stocks) {
+			sb.append(String.format("%25s", s.getName()));
+			for(Integer i : s.getPastPrices()) {
+				sb.append(" | ");
+				sb.append(String.format("%3d", i));
+			}
+			sb.append(" |\n");
+		}
+		return sb.toString();
 	}
 	
 }
