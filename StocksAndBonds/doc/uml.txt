@@ -1,0 +1,50 @@
+@startuml
+
+package ui {
+	Class StocksAndBondsUI {
+		
+	}
+}
+
+package Transaction {
+	Class Transaction {
+		- quantity : int
+		- pricePerUnit : int
+		- holding : Holding
+		
+		+ getQuantity() : int
+		+ getPricePerUnit() : int
+		+ getHolding() : Holding
+	}
+}
+
+package stocks {
+
+	Abstract Class Holding {
+		
+	}
+	
+	Class Stock extends Holding {
+	
+	}
+	
+	Class Bond extends Holding {
+	
+	}
+	
+}
+
+package user {
+	Class User {
+		- transactions : List<Transaction>
+		- cash : int
+
+		+ getCash() : int
+		+ setCash() : int
+		+ getTransactions() : List<Transaction>
+		+ addTransaction(Transaction) : void
+		+ removeTransaction(Transaction) : void
+	}
+}
+
+@enduml
